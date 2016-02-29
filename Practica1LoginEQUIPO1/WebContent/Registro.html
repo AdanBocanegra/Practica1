@@ -4,11 +4,81 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
-#contenedorPrincipal{
-	 position: absolute;
-	 margin-left: 35px;
-	}
 
+body {
+    font-family: "Varela Round", Arial, Helvetica, sans-serif;
+    text-align: center; 
+    background:url(imagenes/1.jpg) no-repeat center center fixed;
+    font-size: 20px;
+    color: white;
+    margin: 100px auto 0 auto;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+#formularioLogin
+{
+    border:4px dotted #a1a1a1 ;
+    padding:10px 90px;
+    background:transparent;
+    width:250px;
+    border-radius:35px;
+       text-align: center;     
+}
+.center {
+    margin: auto;
+    width: 40%;
+    padding: 14px;
+}
+
+#nombres{
+    width: 70%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid white;
+    border-radius: 4px;
+}
+#apellidoPaterno{
+    width: 70%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid white;
+    border-radius: 4px;
+}
+#apellidoMaterno{
+    width: 70%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid white;
+    border-radius: 4px;
+}
+#correoElectronico{
+    width: 70%;
+    padding: 12px 20px;
+    margin: 8px 4px;
+    box-sizing: border-box;
+    border: 2px solid white;
+    border-radius: 6px;
+}
+#contrasena{
+    width: 70%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid white;
+    border-radius: 4px;
+}
+.button{
+    border-radius: 8px;
+    box-shadow: 0 16px 21px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+    font-size: 20px;
+    padding: 6px 10px;
+    
+}
 </style>
 </head>
 <body>
@@ -28,7 +98,7 @@
 				<input type="text" name="apellidoMaterno" id="apellidoMaterno" required="required"><br>
 				
 				<label for="txtCorreo">Email: </label> 
-				<input type="email" name="correoElectronico" id="correoElctronico" required="required"><br>
+				<input type="email" name="correoElectronico" id="correoElectronico" required="required"><br>
 				
 				<label for="txtContrasena">Contraseña: </label> 
 				<input type="password" name="contrasena" id="contrasena" required="required"><br> 
