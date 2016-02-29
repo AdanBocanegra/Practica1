@@ -1,6 +1,8 @@
 package controlador;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -51,7 +53,35 @@ public class ControladorRecuperacionDeContrasena extends HttpServlet {
 		GestionarArchivo archivoregistro = new GestionarArchivo(ruta+"/archivos");
 		String correo = request.getParameter("correo");
 		Correo recuperacion = new Correo();
-		recuperacion.setCorreo(archivoregistro.buscarUsuario(correo));
+		if(recuperacion.setCorreo(archivoregistro.buscarUsuario(correo))){
+			response.setContentType("text/html");
+			PrintWriter salida = response.getWriter();
+			salida.println("<!DOCTYPE html><html>");
+		    salida.println("<head><title>Inicio de sesion</title></head>");
+		    salida.println("<body>");
+		    salida.println("<h1>Se ha enviado el correo con tu contraseña</h1>");
+		    salida.println("<a href=\"Login.html\"> Regresar</a>");
+		    //salida.println("<form id=\"formularioRegistro\" method=\"post\" action=\"registro\">");
+		    //salida.println("<input type=\"text\" name=\"nombres\" id=\"nombres\" required=\"required\"> <br>");
+		    salida.println("</form>");
+		    salida.println("</body></html>");
+		    salida.flush();
+		    salida.close();
+		}else{
+			response.setContentType("text/html");
+			PrintWriter salida = response.getWriter();
+			salida.println("<!DOCTYPE html><html>");
+		    salida.println("<head><title>Inicio de sesion</title></head>");
+		    salida.println("<body>");
+		    salida.println("<h1>Usuario invalido</h1>");
+		    salida.println("<a href=\"Login.html\"> Regresar</a>");
+		    //salida.println("<form id=\"formularioRegistro\" method=\"post\" action=\"registro\">");
+		    //salida.println("<input type=\"text\" name=\"nombres\" id=\"nombres\" required=\"required\"> <br>");
+		    salida.println("</form>");
+		    salida.println("</body></html>");
+		    salida.flush();
+		    salida.close();
+		}
 	}
 
 	@Override
