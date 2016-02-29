@@ -1,7 +1,6 @@
 package modelo;
 
 import java.util.Properties;
-
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.PasswordAuthentication;
@@ -20,7 +19,7 @@ public class Correo {
 		
 	}
 	
-	public void enviarCorreo(Usuario user){
+	public void setCorreo(Usuario user){
 		String to = user.getCorreo();
 		String from = "ravilan1001@alumno.ipn.mx";
 		String host = "smtp.office365.com";
