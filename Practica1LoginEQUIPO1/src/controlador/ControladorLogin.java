@@ -66,8 +66,8 @@ public class ControladorLogin extends HttpServlet {
 		System.out.println("nombre: "+usuario+" contrasena "+pass);
 		usuarioEncontrado = archivoregistro.buscarUsuario(usuario);
 		System.out.println("Usuario: "+usuarioEncontrado.toString());
-		if(usuarioEncontrado==null){
-			System.out.println("Usuario no encontrado");
+		if(usuarioEncontrado.getNombres()==null){
+			/*System.out.println("Usuario no encontrado");
 			response.setContentType("text/html");
 			PrintWriter salida = response.getWriter();
 			salida.println("<!DOCTYPE html><HTML>");
@@ -79,12 +79,11 @@ public class ControladorLogin extends HttpServlet {
 		    salida.println("</form>");
 		    salida.println("</BODY></HTML>");
 		    salida.flush();
-		    salida.close();
+		    salida.close();*/
+		    response.sendRedirect("loginError.html");
 		}else if(usuarioEncontrado.getCorreo().equals(usuario) && usuarioEncontrado.getContrasena().equals(pass)){
 			System.out.println("usuario encontrado");
 			response.sendRedirect("loginExitoso.html");
-		}else{
-			response.sendRedirect("loginError.html");
 		}
 		System.gc();
 	}
