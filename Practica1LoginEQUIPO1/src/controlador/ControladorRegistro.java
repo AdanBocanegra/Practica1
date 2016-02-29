@@ -68,7 +68,7 @@ public class ControladorRegistro extends HttpServlet {
 				String correo = request.getParameter("correoElectronico");
 				String contrasena = request.getParameter("contrasena");
 
-				System.out.println(nombre+"\n"+apellidoMaterno+"\n"+apellidoPaterno+"\n"+correo+"\n"+contrasena);
+				//System.out.println(nombre+"\n"+apellidoMaterno+"\n"+apellidoPaterno+"\n"+correo+"\n"+contrasena);
 
 				//Agrega los datos obtenidos a la instancia
 				nuevoUsuario.setNombres(nombre);
