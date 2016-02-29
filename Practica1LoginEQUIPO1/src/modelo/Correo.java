@@ -19,7 +19,7 @@ public class Correo {
 		
 	}
 	
-	public void setCorreo(Usuario user){
+	public boolean setCorreo(Usuario user){
 		String to = user.getCorreo();
 		String from = "ravilan1001@alumno.ipn.mx";
 		String host = "smtp.office365.com";
@@ -42,13 +42,15 @@ public class Correo {
 			MimeMessage mensaje = new MimeMessage(sesion);
 			mensaje.setFrom(new InternetAddress(from));
 			mensaje.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
-			mensaje.setText("Estimad@:"+user.getNombres()+"tu contraseña es: "+user.getContrasena()+"\n Atentamente JAVA");
+			mensaje.setSubject("Recuperacion de contraseña");
+			mensaje.setText("Estimad@: "+user.getNombres()+" tu contraseña es: "+user.getContrasena()+"\n Atentamente JAVA");
 			Transport.send(mensaje);
 			System.out.println("Mensaje enviado");
+			return true;
 		}catch (MessagingException mex){
 			mex.printStackTrace();
 		}
-		
+		return false;
 	}
 
 }
