@@ -20,7 +20,7 @@ import negocio.GestionarArchivo;
 @WebServlet("/ControladorActualizacion")
 public class ControladorActualizacion extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private HttpSession sesion;
+	private HttpSession sesion, envioUsuarioActual;
 	private Usuario usuarioActual, usuarioActualizado;
 	private GestionarArchivo archivoActualizar;
        
@@ -32,7 +32,6 @@ public class ControladorActualizacion extends HttpServlet {
         // TODO Auto-generated constructor stub
         usuarioActual=new Usuario();
         usuarioActualizado = new Usuario();
-        archivoActualizar = new GestionarArchivo();
     }
 
 	/**
@@ -56,13 +55,20 @@ public class ControladorActualizacion extends HttpServlet {
 		// TODO Auto-generated method stub
 		sesion =request.getSession();
 		usuarioActual = (Usuario)sesion.getAttribute("ACTUALIZACION");
-		
+		System.out.println("Usuario actual "+ usuarioActual);
+		archivoActualizar = new GestionarArchivo(request.getServletContext().getRealPath("/")+"/archivos");
 		//obtencion de datos
 		String nombre = usuarioActual.getNombres();
 		String apellidoPaterno = usuarioActual.getApellidoPaterno();
 		String apellidoMaterno = usuarioActual.getApellidoMaterno();
 		String correo = usuarioActual.getCorreo();
 		String contrasena = usuarioActual.getContrasena();
+		
+		System.out.println("nombre actual: "+ nombre);
+		System.out.println("apellidoP actual: "+ apellidoPaterno);
+		System.out.println("apellidoM actual: "+ apellidoMaterno);
+		System.out.println("correo actual: "+ correo);
+		System.out.println("contrasena actual: "+ contrasena);
 		
 		try{
 			PrintWriter modificarDatos = response.getWriter();
@@ -71,63 +77,24 @@ public class ControladorActualizacion extends HttpServlet {
 			modificarDatos.println("<body>");
 			modificarDatos.println("<div id='contenedorPrincipal'>");
 			modificarDatos.println("<section id='seccionActualizacionDatos'>");
-			modificarDatos.println("<form id='formularioActualizacion'>");
-			modificarDatos.println("<input type='text' name='nombreActualizado' required='required' value='"+nombre +"'>");
-			modificarDatos.println("<input type='text' name='apellidoPaternoActualizado' required='required' value='"+apellidoPaterno +"'>");
-			modificarDatos.println("<input type='text' name='apellidoMaternoActualizado' required='required' value='"+apellidoMaterno +"'>");
-			modificarDatos.println("<input type='email' name='correoActualizado' required='required' value='"+correo +"'>");
-			modificarDatos.println("<input type='password' name='contrasenaActualizado' required='required' value='"+contrasena +"'>");
+			modificarDatos.println("<form id='formularioActualizacion' method='post' action='SeguimientoControlador'>");
+			modificarDatos.println("<input type='text' name='nombreActualizado' id='nombreActualizado' required='required' value='"+nombre +"'>");
+			modificarDatos.println("<input type='text' name='apellidoPaternoActualizado' id='apellidoPaternoActualizado' required='required' value='"+apellidoPaterno +"'>");
+			modificarDatos.println("<input type='text' name='apellidoMaternoActualizado' id='apellidoMaternoActualizado' required='required' value='"+apellidoMaterno +"'>");
+			modificarDatos.println("<input type='email' name='correoActualizado' id='correoActualizado' required='required' value='"+correo +"'>");
+			modificarDatos.println("<input type='password' name='contrasenaActualizado' id='contrasenaActualizado' required='required' value='"+contrasena +"'>");
 			modificarDatos.println("<button type='submit'>Actualizar</button>");
 			modificarDatos.println("</form>");
 			modificarDatos.println("</section>");
 			modificarDatos.println("</div>");
 			modificarDatos.println("</body>");
 			modificarDatos.println("</html>");
+			
+			
+			envioUsuarioActual = request.getSession();
+			envioUsuarioActual.setAttribute("USUARIOACTUAL", usuarioActual);
 			modificarDatos.close();
-			
-//			Obtencion de datos a actualizar
-			String nombreActualizado = request.getParameter("nombreActualizado");
-			String apellidoPaternoActualizado = request.getParameter("apellidoPaternoActualizado");
-			String apellidoMaternoActualizado = request.getParameter("apellidoMaternoActualizado");
-			String correoActualizado = request.getParameter("correoActualizado");
-			String contrasenaActualizado = request.getParameter("contrasenaActualizado");
-			
-//			Envio de datos a actualizar
-			usuarioActualizado.setNombres(nombreActualizado);
-			usuarioActualizado.setApellidoPaterno(apellidoPaternoActualizado);
-			usuarioActualizado.setApellidoMaterno(apellidoMaternoActualizado);
-			usuarioActualizado.setCorreo(correoActualizado);
-			usuarioActualizado.setContrasena(contrasenaActualizado);
-			
-			boolean actualizacion = archivoActualizar.actualizarUsuario(usuarioActual, usuarioActualizado);
-			if(actualizacion){
-				try{
-					PrintWriter mostrarDatos = response.getWriter();
-					mostrarDatos.println("<!DOCTYPE html><html>");
-					mostrarDatos.println("<head><h1>Actualizacion de datos </h1></head>");
-					mostrarDatos.println("<body>");
-					mostrarDatos.println("<header>Actualizacion exitosa!!</header>");
-					mostrarDatos.println("<div id='contenedorPrincipal'>");
-					mostrarDatos.println("<section id='seccionMostrarDatos'>");
-					mostrarDatos.println("<form id='formularioActualizacionMostrar' action='Login.html' >");
-					mostrarDatos.println("<output name='nombreActualizadoMostrar' for='"+nombreActualizado +"'>");
-					mostrarDatos.println("<output name='apellidoPaternoActualizadoMostrar' for='"+apellidoPaternoActualizado +"'>");
-					mostrarDatos.println("<output name='apellidoMaternoActualizadoMostrar' for='"+apellidoPaternoActualizado +"'>");
-					mostrarDatos.println("<output name='correoActualizadoMostrar' for='"+correoActualizado +"'>");
-					mostrarDatos.println("<output name='contrasenaActualizadoMostrar' for='"+contrasenaActualizado +"'>");
-					mostrarDatos.println("<button type='submit'>Inicio</button>");
-					mostrarDatos.println("</form>");
-					mostrarDatos.println("</section>");
-					mostrarDatos.println("</div>");
-					mostrarDatos.println("</body>");
-					mostrarDatos.println("</html>");
-					mostrarDatos.close();
-				}catch(Exception e){
-					
-				}
-			}else{
-				response.sendRedirect("actualizacionUsuarioFallida.html");		
-			}
+
 			
 		}catch(IOException e){
 			
