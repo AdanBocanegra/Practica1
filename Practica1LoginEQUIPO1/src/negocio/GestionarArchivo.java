@@ -1,7 +1,9 @@
 package negocio;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,6 +14,7 @@ import modelo.Usuario;
 public class GestionarArchivo {
 	private File rutaDelArchivo;
 	private Usuario unUsuario;
+	private String ruta;
 	
 	public GestionarArchivo(){
 		rutaDelArchivo = null;
@@ -20,6 +23,7 @@ public class GestionarArchivo {
 	
 	public GestionarArchivo(String ruta) {
 		unUsuario = new Usuario();
+		this.ruta=ruta;
 		try {
 			//Creacion o apertura del archivo
 			rutaDelArchivo = new File(ruta,"prueba.txt");
@@ -88,36 +92,52 @@ public class GestionarArchivo {
 	}
 	
 	public boolean actualizarUsuario(Usuario usuarioActual , Usuario usuarioActualizado){
-		String linea="";
+		String linea,modificacion;
 		String []lineaDividida=null;
-
+		String archivoViejo ="prueba.txt";
+		String archivoNuevo ="nuevaPrueba.txt";
+		
+		BufferedReader bufferLinea = null;
+		BufferedWriter bufferArchivo = null;
+		
 		try{
-			FileWriter modificarUsuario = new FileWriter(rutaDelArchivo);
-			BufferedReader bufferLinea = new BufferedReader(new FileReader(rutaDelArchivo));
-			PrintWriter eliminacion = new PrintWriter(modificarUsuario);
+			bufferLinea =new BufferedReader(new FileReader(ruta+"/"+archivoViejo));
+			bufferArchivo =new BufferedWriter(new FileWriter(ruta+"/"+archivoNuevo,true));
 
-			while (linea!= null) {
-				//System.out.println("linea del archivo " + linea.length());
+			while ((linea=bufferLinea.readLine())!= null) {
+				System.out.println("linea del archivo " + linea.length());
 				lineaDividida = linea.split("\\|");
-				if(!lineaDividida[0].equals(usuarioActual)){
-					System.out.println("Usuario: "+usuarioActual+" encontrado"+" Longitud de lineaDividida: "+lineaDividida.length);
-					eliminacion.println("linea");
-					eliminacion.flush();
-					eliminacion.close();
-				}else if(lineaDividida.length==0){
-					unUsuario=null;
-					return false;
+				if(!lineaDividida[3].equals(usuarioActual.getCorreo())){
+					bufferArchivo.write(linea+"\n");
 				}
-				linea=bufferLinea.readLine();
+				else if(lineaDividida[3].equals(usuarioActual.getCorreo())){
+					modificacion = usuarioActualizado.getNombres()+"|"+usuarioActualizado.getApellidoPaterno()+"|"+usuarioActualizado.getApellidoMaterno()+"|"+usuarioActualizado.getCorreo()+"|"+usuarioActualizado.getContrasena();
+					linea = linea.replace(linea,modificacion);
+					bufferArchivo.write(linea+"\n");
+				}
 			}
-			modificarUsuario.write(usuarioActualizado.getNombres() + "|" + usuarioActualizado.getApellidoPaterno() + "|"
-					+ usuarioActualizado.getApellidoMaterno() + "|" + usuarioActualizado.getCorreo() + "|" + usuarioActualizado.getContrasena() + "\n");
-			bufferLinea.close();
-			eliminacion.close();
-			modificarUsuario.close();
 		}catch(IOException e){
 			return false;
+		}finally{
+			try{
+				if(bufferLinea!=null){
+					bufferLinea.close();
+				}
+			}catch(IOException e){
+				
+			}
+			try{
+				if(bufferArchivo!=null){
+					bufferArchivo.close();
+				}
+			}catch(IOException e){
+				
+			}
 		}
+		File viejoArchivo = new File(ruta+"/"+archivoViejo);
+		viejoArchivo.delete();
+		File nuevoArchivo = new File(ruta+"/"+archivoNuevo);
+		nuevoArchivo.renameTo(viejoArchivo);
 		return true;
 	}
 }
