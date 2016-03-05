@@ -1,7 +1,6 @@
 package controlador;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -9,7 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import javax.servlet.http.HttpSession;
 import modelo.Usuario;
 import negocio.GestionarArchivo;
 
@@ -20,6 +19,7 @@ import negocio.GestionarArchivo;
 public class ControladorLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Usuario usuarioEncontrado;
+	private HttpSession sesion;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -27,6 +27,7 @@ public class ControladorLogin extends HttpServlet {
     public ControladorLogin() {
         super();
         usuarioEncontrado = new Usuario();
+        
         // TODO Auto-generated constructor stub
     }
 
@@ -59,6 +60,8 @@ public class ControladorLogin extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		//doGet(request, response);
+		sesion = request.getSession();
+		
 		String ruta = request.getServletContext().getRealPath("/");
 		GestionarArchivo archivoregistro = new GestionarArchivo(ruta+"/archivos");
 		String usuario = request.getParameter("usuario");
@@ -83,6 +86,7 @@ public class ControladorLogin extends HttpServlet {
 		    response.sendRedirect("loginError.html");
 		}else if(usuarioEncontrado.getCorreo().equals(usuario) && usuarioEncontrado.getContrasena().equals(pass)){
 			System.out.println("usuario encontrado");
+			sesion.setAttribute("ACTUALIZACION",usuarioEncontrado);
 			response.sendRedirect("loginExitoso.html");
 		}
 		System.gc();
